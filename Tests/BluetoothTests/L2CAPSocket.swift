@@ -126,9 +126,11 @@ internal final class TestL2CAPSocket: L2CAPConnection, @unchecked Sendable {
     let destination: Bluetooth.BluetoothAddress
 
     var status: L2CAPSocketStatus<POSIXError> {
-        .init(
-            send: target != nil,
-            recieve: target != nil && receivedData.isEmpty == false,
+        lock.lock()
+        defer { lock.unlock() }
+        return .init(
+            send: _target != nil,
+            recieve: _target != nil && _receivedData.isEmpty == false,
             accept: false,
             error: nil
         )
@@ -145,12 +147,43 @@ internal final class TestL2CAPSocket: L2CAPConnection, @unchecked Sendable {
         _securityLevel = securityLevel
     }
 
+    /// Serializes access to `_target`, `_receivedData`, and `cache`, all of which are
+    /// read and mutated from different threads (the `GATTServer.run()` polling loop and
+    /// the thread issuing `send(_:)`/`connect(to:)`/`close()`).
+    private let lock = NSLock()
+
     /// Target socket.
-    private weak var target: TestL2CAPSocket?
+    private weak var _target: TestL2CAPSocket?
 
-    fileprivate(set) var receivedData = [Data]()
+    fileprivate var _receivedData = [Data]()
 
-    private(set) var cache = [Data]()
+    private var _cache = [Data]()
+
+    fileprivate(set) var receivedData: [Data] {
+        get {
+            lock.lock()
+            defer { lock.unlock() }
+            return _receivedData
+        }
+        set {
+            lock.lock()
+            defer { lock.unlock() }
+            _receivedData = newValue
+        }
+    }
+
+    private(set) var cache: [Data] {
+        get {
+            lock.lock()
+            defer { lock.unlock() }
+            return _cache
+        }
+        set {
+            lock.lock()
+            defer { lock.unlock() }
+            _cache = newValue
+        }
+    }
 
     // MARK: - Initialization
 
@@ -171,8 +204,17 @@ internal final class TestL2CAPSocket: L2CAPConnection, @unchecked Sendable {
     // MARK: - Methods
 
     func close() {
-        target = nil
-        target?.target = nil
+        lock.lock()
+        let oldTarget = _target
+        _target = nil
+        lock.unlock()
+        oldTarget?.disconnect()
+    }
+
+    private func disconnect() {
+        lock.lock()
+        _target = nil
+        lock.unlock()
     }
 
     /// Write to the socket.
@@ -180,7 +222,11 @@ internal final class TestL2CAPSocket: L2CAPConnection, @unchecked Sendable {
 
         print("L2CAP Socket: \(name) will send \(data.count) bytes")
 
-        guard let target = self.target
+        lock.lock()
+        let target = _target
+        lock.unlock()
+
+        guard let target
         else { throw POSIXError(.ECONNRESET) }
 
         target.receive(data)
@@ -191,25 +237,35 @@ internal final class TestL2CAPSocket: L2CAPConnection, @unchecked Sendable {
 
         print("L2CAP Socket: \(name) will read \(bufferSize) bytes")
 
-        guard self.target != nil
-        else { throw POSIXError(.ECONNRESET) }
+        lock.lock()
+        let hasTarget = _target != nil
+        guard hasTarget else {
+            lock.unlock()
+            throw POSIXError(.ECONNRESET)
+        }
 
-        guard self.receivedData.isEmpty == false else {
+        guard _receivedData.isEmpty == false else {
+            lock.unlock()
             throw POSIXError(.EAGAIN)
         }
 
-        let data = self.receivedData.removeFirst()
-        cache.append(data)
+        let data = _receivedData.removeFirst()
+        _cache.append(data)
+        lock.unlock()
         return data
     }
 
     fileprivate func receive(_ data: Data) {
-        receivedData.append(data)
+        lock.lock()
+        _receivedData.append(data)
+        lock.unlock()
         print("L2CAP Socket: \(name) received \([UInt8](data))")
     }
 
     internal func connect(to socket: TestL2CAPSocket) {
-        self.target = socket
+        lock.lock()
+        _target = socket
+        lock.unlock()
     }
 }
 #endif
