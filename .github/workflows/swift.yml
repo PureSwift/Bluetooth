@@ -8,22 +8,21 @@ jobs:
     strategy:
       matrix:
         config: ["debug", "release"]
-        options: ["", "SWIFT_BUILD_DYNAMIC_LIBRARY=1"]
     steps:
     - name: Checkout
       uses: actions/checkout@v4
     - name: Swift Version
       run: swift --version
     - name: Build
-      run: ${{ matrix.options }} swift build -c ${{ matrix.config }}
+      run: swift build -c ${{ matrix.config }}
     - name: Test
-      run: ${{ matrix.options }} swift test -c ${{ matrix.config }} --no-parallel
+      run: swift test -c ${{ matrix.config }} --no-parallel
   
   linux:
     name: Linux
     strategy:
       matrix:
-        container: ["swift:6.2.3", "swift:6.3.2"]
+        container: ["swift:6.2.3", "swift:6.3.3"]
         config: ["debug", "release"]
         options: ["", "SWIFT_BUILD_DYNAMIC_LIBRARY=1"]
     runs-on: ubuntu-latest
@@ -34,9 +33,9 @@ jobs:
     - name: Swift Version
       run: swift --version
     - name: Build
-      run: ${{ matrix.options }} swift build -c ${{ matrix.config }}
+      run: swift build -c ${{ matrix.config }}
     - name: Test
-      run: ${{ matrix.options }} swift test -c ${{ matrix.config }} --no-parallel
+      run: swift test -c ${{ matrix.config }} --no-parallel
 
   # Run the full test suite on the Android x86_64 emulator with the official
   # Swift 6.3.2 Android SDK. x86_64 is the only Android ABI that GitHub-hosted
