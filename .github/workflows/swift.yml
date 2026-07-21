@@ -92,7 +92,7 @@ jobs:
           shell: bash
           run: |
             set -euo pipefail
-            apt-get update && apt-get install -y unzip
+            apt-get update && apt-get install -y curl unzip
             swift sdk install https://download.swift.org/swift-6.3.2-release/android-sdk/swift-6.3.2-RELEASE/swift-6.3.2-RELEASE_android.artifactbundle.tar.gz --checksum 939e933549d12d28f2e0bf71019d734d309859e9773c572657ce565a81f85d68
             # SwiftPM resolves its data directory from the passwd entry rather than
             # $HOME, so inside the container the bundle can land under /root even
