@@ -267,6 +267,11 @@ if buildCABI {
             name: "BluetoothABI",
             type: .dynamic,
             targets: ["BluetoothABI"]
+        ),
+        .library(
+            name: "BluetoothSDP",
+            type: .dynamic,
+            targets: ["BluetoothSDP"]
         )
     ]
     package.targets += [
@@ -274,7 +279,7 @@ if buildCABI {
             name: "CBluetooth",
             exclude: [
                 "README.md",
-                "include/LICENSE"
+                "include/bluetooth/LICENSE"
             ]
         ),
         .target(
@@ -288,6 +293,21 @@ if buildCABI {
             name: "BluetoothABITests",
             dependencies: [
                 "BluetoothABI",
+                "CBluetooth",
+                "Bluetooth"
+            ]
+        ),
+        .target(
+            name: "BluetoothSDP",
+            dependencies: [
+                "Bluetooth",
+                "CBluetooth"
+            ]
+        ),
+        .testTarget(
+            name: "BluetoothSDPTests",
+            dependencies: [
+                "BluetoothSDP",
                 "CBluetooth",
                 "Bluetooth"
             ]
