@@ -1,0 +1,10 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+exec_prefix=${prefix}
+libdir=${prefix}/@CMAKE_INSTALL_LIBDIR@
+includedir=${prefix}/@CMAKE_INSTALL_INCLUDEDIR@
+
+Name: bluetooth-util
+Description: @PROJECT_DESCRIPTION@
+Version: @BLUETOOTH_UTIL_VERSION@
+Libs: -L${libdir} -lbluetooth-util
+Cflags: -I${includedir}
