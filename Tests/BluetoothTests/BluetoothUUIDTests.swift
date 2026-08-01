@@ -161,8 +161,14 @@ import Bluetooth
 
         #if !os(WASI)
         #expect(uuid == BluetoothUUID.Member.savantSystems2)
+        #endif
+        // The name, and the description that embeds it, come from the
+        // assigned-numbers metadata, which the Metadata trait gates.
+        #if Metadata && !os(WASI)
         #expect(uuid.metadata?.name == "Savant Systems LLC")
         #expect("\(uuid)" == "FEA9 (Savant Systems LLC)")
+        #else
+        #expect("\(uuid)" == uuidString)
         #endif
         #expect(uuid.rawValue == uuidString)
         #expect(uuid.hashValue != 0)
@@ -198,7 +204,7 @@ import Bluetooth
 
         let uuid = try #require(BluetoothUUID(rawValue: uuidString))
 
-        #if !os(WASI)
+        #if Metadata && !os(WASI)
         #expect(uuid.metadata == nil)
         #endif
         #expect(uuid.rawValue == uuidString)
