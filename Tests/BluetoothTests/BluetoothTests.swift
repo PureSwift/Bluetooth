@@ -61,8 +61,12 @@ import BluetoothGATT
 
         let company: CompanyIdentifier = 76  // Apple, Inc.
 
-        #if !os(WASI)
+        // The description falls back to the raw value without the
+        // assigned-numbers metadata the Metadata trait gates.
+        #if Metadata && !os(WASI)
         #expect(company.description == "Apple, Inc.")
+        #else
+        #expect(company.description == "76")
         #endif
         #expect(company.hashValue != 0)
         #expect(company != 77)
