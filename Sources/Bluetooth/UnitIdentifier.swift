@@ -30,7 +30,7 @@ extension UnitIdentifier: ExpressibleByIntegerLiteral {
 extension UnitIdentifier: CustomStringConvertible {
 
     public var description: String {
-        #if canImport(Foundation) && canImport(BluetoothMetadata) && !os(WASI) && !hasFeature(Embedded)
+        #if Metadata && canImport(Foundation) && !os(WASI) && !hasFeature(Embedded)
         return self.name ?? rawValueDescription
         #else
         return rawValueDescription
