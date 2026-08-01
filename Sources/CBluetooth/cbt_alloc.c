@@ -10,7 +10,7 @@
 
 #include <stdlib.h>
 
-#include "bluetooth.h"
+#include <bluetooth/bluetooth.h>
 
 void *bt_malloc(size_t size)
 {
