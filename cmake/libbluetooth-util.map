@@ -1,0 +1,46 @@
+/*
+ * Version script for libbluetooth-util.so.0.
+ *
+ * Upstream libbluetooth exports every symbol it defines and carries no
+ * version script. We pin the list instead, so that the Swift runtime's
+ * symbols and our own internals stay local and the ABI surface is
+ * asserted rather than incidental. Keep in sync with cmake/symbols.txt,
+ * which Scripts/check-exports.sh verifies against the built library.
+ */
+
+LIBBLUETOOTH_UTIL_0 {
+global:
+    /* bluetooth.c entry points */
+    ba2oui;
+    ba2str;
+    ba2strlc;
+    bachk;
+    bafprintf;
+    baprintf;
+    basnprintf;
+    basprintf;
+    baswap;
+    batostr;
+    bt_compidtostr;
+    bt_error;
+    bt_free;
+    bt_malloc;
+    bt_malloc0;
+    str2ba;
+    strtoba;
+
+    /* bt_uuid_* family */
+    bt_string_to_uuid;
+    bt_uuid128_create;
+    bt_uuid16_cmp;
+    bt_uuid16_create;
+    bt_uuid32_create;
+    bt_uuid_cmp;
+    bt_uuid_strcmp;
+    bt_uuid_to_le;
+    bt_uuid_to_string;
+    bt_uuid_to_uuid128;
+
+local:
+    *;
+};
