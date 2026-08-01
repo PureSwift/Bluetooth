@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-#include "bluetooth.h"
+#include <bluetooth/bluetooth.h>
 
 int baprintf(const char *format, ...)
 {
