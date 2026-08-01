@@ -1,0 +1,36 @@
+# The exported ABI surface of libbluetooth-util.so.0, asserted by
+# Scripts/check-exports.sh. One symbol per line; `#` comments and blank
+# lines are ignored. Both missing and extra symbols fail the check.
+#
+# The `bluetooth.c` entry points of libbluetooth (17)
+ba2oui
+ba2str
+ba2strlc
+bachk
+bafprintf
+baprintf
+basnprintf
+basprintf
+baswap
+batostr
+bt_compidtostr
+bt_error
+bt_free
+bt_malloc
+bt_malloc0
+str2ba
+strtoba
+#
+# The bt_uuid_* family (10). Upstream BlueZ keeps these in
+# libbluetooth-internal.a and exports none of them; we export them
+# deliberately, which is the point of shipping this library separately.
+bt_string_to_uuid
+bt_uuid128_create
+bt_uuid16_cmp
+bt_uuid16_create
+bt_uuid32_create
+bt_uuid_cmp
+bt_uuid_strcmp
+bt_uuid_to_le
+bt_uuid_to_string
+bt_uuid_to_uuid128
