@@ -3,7 +3,7 @@
 //  Bluetooth
 //
 //  Private declarations shared between the C shims and the Swift ABI layer.
-//  Unlike `bluetooth.h` and `uuid.h`, this header is ours (MIT).
+//  Unlike the headers under `bluetooth/`, this header is ours (MIT).
 //
 
 #ifndef CBT_INTERNAL_H
@@ -14,8 +14,10 @@
 #include <stdint.h>
 #include <stddef.h>
 
-#include "bluetooth.h"
-#include "uuid.h"
+#include <bluetooth/bluetooth.h>
+#include <bluetooth/uuid.h>
+#include <bluetooth/sdp.h>
+#include <bluetooth/sdp_lib.h>
 
 #ifdef __cplusplus
 extern "C" {
