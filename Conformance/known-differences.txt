@@ -30,3 +30,26 @@ bt_compidtostr(1000) = "Reiner Kartengeraete GmbH & Co. KG."
 bt_compidtostr(1000) = "not assigned"
 bt_compidtostr(2393) = "not assigned"
 bt_compidtostr(2393) = "HerdDogg, Inc"
+
+# ---------------------------------------------------------------------
+# sdp_uuid16_cmp: memcmp's exact magnitude is not a real contract
+#
+# The reference is `memcmp(&u1->value.uuid16, &u2->value.uuid16, 2)`.
+# C only specifies memcmp's *sign*, not its magnitude, and the
+# magnitude turns out to be genuinely unstable: calling the real libc
+# memcmp on the same two bytes from Swift gives -256 at -O and -1 at
+# -Onone, and neither matches the reference's own -8388608 — three
+# different magnitudes from three compilations of the same
+# byte-for-byte comparison. Chasing an exact match here would mean
+# matching an implementation detail of one specific compiler's codegen
+# on one specific build, not a documented behavior.
+#
+# sdp_uuid16_cmp is used exclusively as a `sdp_comp_func_t` three-way
+# comparator (sdp_list_insert_sorted / sdp_list_find), where only the
+# sign is ever inspected. Our implementation computes the byte
+# difference explicitly instead of calling memcmp, which is
+# deterministic and always sign-correct, but does not chase glibc's
+# specific magnitude. Confirmed: both sides return a negative value
+# for this input, i.e. they agree on the only thing that matters.
+uuid16_cmp(differ) = -8388608
+uuid16_cmp(differ) = -1
