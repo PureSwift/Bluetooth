@@ -14,6 +14,11 @@
 #                           reference is built from the upstream UUID source,
 #                           so this driver is skipped unless BLUEZ_SOURCE
 #                           points at an extracted BlueZ source tree.
+#   conformance_sdp.c       the 75 pure `sdp_*` symbols (data model, PDU
+#                           codec, attribute accessors) implemented in
+#                           BluetoothSDP. Unlike bt_uuid_*, the system
+#                           library exports all of these directly, so
+#                           this one also links straight against it.
 #
 # Both sides of each comparison compile against the *same* (vendored)
 # headers, so the only variable is which implementation is linked.
@@ -23,7 +28,7 @@
 #
 # Usage:
 #     SWIFTPM_BLUETOOTH_CABI=1 swift build
-#     Conformance/compare.sh [path-to-our-shared-library]
+#     Conformance/compare.sh [path-to-libBluetoothABI.so] [path-to-libBluetoothSDP.so]
 #
 # Environment:
 #     BT_REFERENCE_LIB   path to the reference libbluetooth.so.3
@@ -35,6 +40,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 BUILD="${ROOT}/.build/conformance"
 TRIPLE="$(swift -print-target-info | sed -n 's/.*"unversionedTriple": "\([^"]*\)".*/\1/p' | head -1)"
 OURS="${1:-${ROOT}/.build/${TRIPLE}/debug/libBluetoothABI.so}"
+OURS_SDP="${2:-${ROOT}/.build/${TRIPLE}/debug/libBluetoothSDP.so}"
 
 find_reference() {
     local found
@@ -70,8 +76,11 @@ mkdir -p "${BUILD}"
 # The drivers include <bluetooth/...>, so stage the vendored headers
 # under that prefix and use them for every build.
 mkdir -p "${BUILD}/include/bluetooth"
-cp "${ROOT}/Sources/CBluetooth/include/bluetooth.h" \
-   "${ROOT}/Sources/CBluetooth/include/uuid.h" \
+cp "${ROOT}/Sources/CBluetooth/include/bluetooth/bluetooth.h" \
+   "${ROOT}/Sources/CBluetooth/include/bluetooth/uuid.h" \
+   "${ROOT}/Sources/CBluetooth/include/bluetooth/sdp.h" \
+   "${ROOT}/Sources/CBluetooth/include/bluetooth/sdp_lib.h" \
+   "${ROOT}/Sources/CBluetooth/include/bluetooth/hci.h" \
    "${BUILD}/include/bluetooth/"
 
 CFLAGS=(-O0 -g -I "${BUILD}/include")
@@ -140,6 +149,20 @@ if [[ -n "${BLUEZ_SOURCE:-}" && -f "${BLUEZ_SOURCE}/lib/bluetooth/uuid.c" ]]; th
     compare uuid "${BUILD}/uuid.reference" "${BUILD}/uuid.ours" || status=1
 else
     echo "conformance/uuid: skipped (set BLUEZ_SOURCE to a BlueZ source tree to enable)"
+fi
+
+# --- sdp_* family (data model, PDU codec, attribute accessors) --------
+
+if [[ -f "${OURS_SDP}" ]]; then
+    cc "${CFLAGS[@]}" -o "${BUILD}/sdp.reference" \
+        "${ROOT}/Conformance/conformance_sdp.c" "${REFERENCE}"
+    cc "${CFLAGS[@]}" -o "${BUILD}/sdp.ours" \
+        "${ROOT}/Conformance/conformance_sdp.c" "${OURS_SDP}" \
+        -Wl,-rpath,"$(dirname "${OURS_SDP}")"
+
+    compare sdp "${BUILD}/sdp.reference" "${BUILD}/sdp.ours" || status=1
+else
+    echo "conformance/sdp: skipped (${OURS_SDP} not found)"
 fi
 
 exit "${status}"
