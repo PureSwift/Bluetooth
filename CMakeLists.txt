@@ -211,6 +211,23 @@ target_compile_options(BluetoothABI PRIVATE
 target_link_libraries(BluetoothABI PUBLIC Bluetooth CBluetooth)
 
 # ---------------------------------------------------------------------
+# BluetoothSDP — the Swift implementations of the pure sdp.c symbols
+# ---------------------------------------------------------------------
+
+file(GLOB BLUETOOTH_SDP_SOURCES CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/Sources/BluetoothSDP/*.swift")
+
+add_library(BluetoothSDP STATIC ${BLUETOOTH_SDP_SOURCES})
+
+set_target_properties(BluetoothSDP PROPERTIES
+    Swift_MODULE_NAME BluetoothSDP)
+
+target_compile_options(BluetoothSDP PRIVATE
+    "SHELL:-package-name Bluetooth")
+
+target_link_libraries(BluetoothSDP PUBLIC Bluetooth CBluetooth)
+
+# ---------------------------------------------------------------------
 # libbluetooth-util.so.0 — the installable artifact
 # ---------------------------------------------------------------------
 
@@ -243,10 +260,11 @@ if(BLUETOOTH_ABI_SHARED)
     target_link_options(bluetooth-util PRIVATE
         "LINKER:--whole-archive"
         "LINKER:$<TARGET_FILE:BluetoothABI>"
+        "LINKER:$<TARGET_FILE:BluetoothSDP>"
         "LINKER:$<TARGET_FILE:CBluetooth>"
         "LINKER:--no-whole-archive")
 
-    add_dependencies(bluetooth-util BluetoothABI CBluetooth)
+    add_dependencies(bluetooth-util BluetoothABI BluetoothSDP CBluetooth)
 
     # Linked normally: only the parts of the engine actually referenced.
     target_link_libraries(bluetooth-util PRIVATE Bluetooth)
@@ -278,9 +296,12 @@ if(BLUETOOTH_ABI_SHARED)
 endif()
 
 if(BLUETOOTH_ABI_INSTALL_HEADERS)
-    install(FILES
-        "${CMAKE_CURRENT_SOURCE_DIR}/Sources/CBluetooth/include/bluetooth.h"
-        "${CMAKE_CURRENT_SOURCE_DIR}/Sources/CBluetooth/include/uuid.h"
+    # hci.h is vendored only because sdp_lib.h includes it; it declares
+    # nothing this library implements, but the reference package installs
+    # it too, so consumers that include it directly keep working.
+    file(GLOB CBLUETOOTH_HEADERS
+        "${CMAKE_CURRENT_SOURCE_DIR}/Sources/CBluetooth/include/bluetooth/*.h")
+    install(FILES ${CBLUETOOTH_HEADERS}
         DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/bluetooth")
 endif()
 
