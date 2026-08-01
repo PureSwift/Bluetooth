@@ -1,0 +1,32 @@
+# Accepted differences between the reference libbluetooth and ours.
+#
+# Every line here is matched verbatim against the differing lines of the
+# conformance diff (either side). A difference not listed here fails the
+# run. Blank lines and `#` comments are ignored.
+#
+# Add an entry only with a written justification below it.
+
+# ---------------------------------------------------------------------
+# bt_compidtostr: metadata source
+#
+# The reference is a hand-maintained C switch, frozen at the BlueZ
+# release date. Ours reads the Bluetooth SIG assigned-numbers metadata
+# shipped in BluetoothMetadata, which tracks the published list. The two
+# therefore disagree wherever the SIG has changed an assignment since
+# the reference table was last updated. Three such cases exist against
+# BlueZ 5.85 / libbluetooth 5.82:
+#
+#   0     the SIG renamed "Ericsson Technology Licensing" to "Ericsson AB"
+#   1000  the SIG withdrew this assignment; BlueZ still carries the old
+#         name "Reiner Kartengeraete GmbH & Co. KG."
+#   2393  assigned to "HerdDogg, Inc" after the reference table was frozen
+#
+# Consumers that display the string see a more current name; none of
+# these change the returned pointer's lifetime or the "not assigned"
+# fallback contract.
+bt_compidtostr(0) = "Ericsson Technology Licensing"
+bt_compidtostr(0) = "Ericsson AB"
+bt_compidtostr(1000) = "Reiner Kartengeraete GmbH & Co. KG."
+bt_compidtostr(1000) = "not assigned"
+bt_compidtostr(2393) = "not assigned"
+bt_compidtostr(2393) = "HerdDogg, Inc"
