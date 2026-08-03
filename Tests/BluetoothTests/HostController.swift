@@ -43,7 +43,7 @@ internal final class TestHostController: BluetoothHostControllerInterface {
     }
 
     /// Send a command to the controller and wait for response.
-    func deviceRequest<C: HCICommand>(_ command: C, timeout: HCICommandTimeout) throws {
+    func deviceRequest<C: HCICommand>(_ command: C, timeout: HCICommandTimeout) async throws {
 
         let data = try hciRequest(command, eventParameterLength: 1)
 
@@ -58,7 +58,7 @@ internal final class TestHostController: BluetoothHostControllerInterface {
         _ command: C,
         _ eventParameterType: EP.Type,
         timeout: HCICommandTimeout
-    ) throws -> EP {
+    ) async throws -> EP {
 
         let data = try hciRequest(
             command,
@@ -72,7 +72,7 @@ internal final class TestHostController: BluetoothHostControllerInterface {
     }
 
     /// Send a command to the controller and wait for response.
-    func deviceRequest<CP: HCICommandParameter>(_ commandParameter: CP, timeout: HCICommandTimeout) throws {
+    func deviceRequest<CP: HCICommandParameter>(_ commandParameter: CP, timeout: HCICommandTimeout) async throws {
 
         let data = try hciRequest(
             CP.command,
@@ -91,7 +91,7 @@ internal final class TestHostController: BluetoothHostControllerInterface {
         _ commandParameter: CP,
         _ eventParameterType: EP.Type,
         timeout: HCICommandTimeout
-    ) throws -> EP {
+    ) async throws -> EP {
 
         let command = CP.command
 
@@ -110,7 +110,7 @@ internal final class TestHostController: BluetoothHostControllerInterface {
     }
 
     /// Sends a command to the device and waits for a response with return parameter values.
-    func deviceRequest<Return: HCICommandReturnParameter>(_ commandReturnType: Return.Type, timeout: HCICommandTimeout) throws -> Return {
+    func deviceRequest<Return: HCICommandReturnParameter>(_ commandReturnType: Return.Type, timeout: HCICommandTimeout) async throws -> Return {
 
         let data = try hciRequest(
             commandReturnType.command,
@@ -129,7 +129,7 @@ internal final class TestHostController: BluetoothHostControllerInterface {
     }
 
     /// Sends a command to the device and waits for a response with return parameter values.
-    func deviceRequest<CP: HCICommandParameter, Return: HCICommandReturnParameter>(_ commandParameter: CP, _ commandReturnType: Return.Type, timeout: HCICommandTimeout) throws -> Return {
+    func deviceRequest<CP: HCICommandParameter, Return: HCICommandReturnParameter>(_ commandParameter: CP, _ commandReturnType: Return.Type, timeout: HCICommandTimeout) async throws -> Return {
 
         assert(CP.command.opcode == Return.command.opcode)
 

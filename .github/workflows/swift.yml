@@ -18,14 +18,28 @@ jobs:
     - name: Test
       run: swift test -c ${{ matrix.config }} --no-parallel
   
+  # arm64 runs on ubuntu-24.04-arm, a real hosted ARM64 machine, not a
+  # cross-compilation target (unlike swift-arm.yml's armv6/armv7 jobs) —
+  # it builds and runs the test suite directly, with Docker pulling the
+  # arm64 variant of the same official Swift container images.
   linux:
-    name: Linux
+    name: Linux (${{ matrix.arch }}, ${{ matrix.container }}, ${{ matrix.config }})
     strategy:
+      # One failing cell shouldn't hide the others' results — knowing
+      # which arch/toolchain/config combinations fail is the whole point
+      # of the matrix when diagnosing platform-specific behavior.
+      fail-fast: false
       matrix:
+        arch: ["x86_64", "arm64"]
         container: ["swift:6.2.3", "swift:6.3.3"]
         config: ["debug", "release"]
         options: ["", "SWIFT_BUILD_DYNAMIC_LIBRARY=1"]
-    runs-on: ubuntu-latest
+        include:
+          - arch: x86_64
+            runner: ubuntu-latest
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
     container: ${{ matrix.container }}-jammy
     steps:
     - name: Checkout
