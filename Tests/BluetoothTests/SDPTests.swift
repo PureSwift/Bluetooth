@@ -17,17 +17,23 @@ import Bluetooth
 
     @Test func uint128BigEndianBytes() {
 
-        // 15 leading zero bytes then 0x01, most-significant byte
-        // first, must equal the numeric value 1 — not just round-trip
-        // with itself, which a consistently-reversed implementation
-        // would also pass.
-        let one = [UInt8](repeating: 0, count: 15) + [0x01]
-        #expect(UInt128(bigEndianBytes: one) == 1)
-        #expect((1 as UInt128).bigEndianBytes == one)
+        // Checked against a value built independently via the
+        // always-available `ByteValue` tuple initializer (not an
+        // integer literal — UInt128's ExpressibleByIntegerLiteral and
+        // BinaryInteger conformances are macOS-15+-only on this
+        // package's older deployment target), so this catches actual
+        // byte-order mistakes rather than only self-consistency (a
+        // reversed-but-consistent implementation would pass a pure
+        // round-trip check too).
+        let oneBytes = [UInt8](repeating: 0, count: 15) + [0x01]
+        let one = UInt128(bytes: (1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+        #expect(UInt128(bigEndianBytes: oneBytes) == one)
+        #expect(one.bigEndianBytes == oneBytes)
 
         let value = UInt128(bigEndianBytes: Array(0 ..< 16))
         #expect(value.bigEndianBytes == Array(0 ..< 16))
-        #expect(value == UInt128(0x000102030405060708090A0B0C0D0E0F))
+        let expected = UInt128(bytes: (15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0))
+        #expect(value == expected)
     }
 
     @Test func dataElementRoundTrip() {
