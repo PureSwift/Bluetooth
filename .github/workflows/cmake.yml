@@ -10,8 +10,13 @@ jobs:
   cmake:
     name: CMake
     strategy:
+      fail-fast: false
       matrix:
-        container: ["swift:6.2.3", "swift:6.3.3"]
+        # 6.3+ only, unlike the SwiftPM workflows: the C ABI layer this
+        # builds is bound with `@c`, which 6.2 rejects as an unknown
+        # attribute. The rest of the package still builds on 6.2 because
+        # the C ABI targets are off unless SWIFTPM_BLUETOOTH_CABI=1.
+        container: ["swift:6.3.3"]
     runs-on: ubuntu-latest
     # noble, not jammy like the other workflows: CMakeLists.txt requires
     # CMake 3.26+, and jammy's apt only has 3.22. noble ships 3.28.
