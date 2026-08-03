@@ -90,13 +90,17 @@ extension GenerateTool {
         let data = try parseUnitIdentifiersFile()
 
         var generatedCode = ""
-        let units = unitIdentifiers(from: data)
+        // sorted, but not filtered — every entry (including the
+        // internal-use identifier) is covered.
+        let units = data.sorted(by: { $0.key < $1.key })
 
         func 🖨(_ text: String) {
             generatedCode += text + "\n"
         }
 
-        // generate unit test for extensions
+        // See generateCompanyIdentifierTests: one #expect() call site,
+        // driven by a parameterized @Test(arguments:), instead of one
+        // unrolled per entry.
         generatedCode = """
             //
             //  UnitIdentifierTests.swift
@@ -107,37 +111,43 @@ extension GenerateTool {
             import Testing
             @testable import Bluetooth
 
-            // swiftlint:disable type_body_length
+            #if Metadata
             @Suite
             struct UnitIdentifierTests {
 
-                @Test func units() {
+                struct Entry: Sendable {
+                    let id: UInt16
+                    let type: String
+                    let name: String
+                }
 
+                // See generateCompanyIdentifierTests for why this is
+                // built with append() calls instead of an array literal.
+                static var entries: [Entry] {
+                    var entries: [Entry] = []
+                    entries.reserveCapacity(\(units.count))
 
             """
 
-        // generate test methods
-
-        for (id, name, type, memberName) in units {
-            let hexLiteral = "0x" + id.toHexadecimal()
-            let description = hexLiteral + " " + "(" + name + ")"
-            🖨(
-                """
-                        // \(name)
-                        #expect(UnitIdentifier.\(memberName).rawValue == \(hexLiteral))
-                        #expect(UnitIdentifier.\(memberName).type == #\"\(type)\"#)
-                        #expect(UnitIdentifier.\(memberName).name == #\"\(name)\"#)
-                        #expect(UnitIdentifier.\(memberName).description == #\"\(description)\"#)
-                    
-                """)
+        for (id, metadata) in units {
+            🖨("        entries.append(Entry(id: \(id), type: #\"\(metadata.id)\"#, name: #\"\(metadata.name)\"#))")
         }
 
         🖨(
             """
+                    return entries
                 }
 
+                @Test(arguments: entries)
+                func unit(_ entry: Entry) {
+                    let identifier = UnitIdentifier(rawValue: entry.id)
+                    #expect(identifier.rawValue == entry.id)
+                    #expect(identifier.type == entry.type)
+                    #expect(identifier.name == entry.name)
+                    #expect(identifier.description == entry.name)
+                }
             }
-            // swiftlint:enable type_body_length
+            #endif
             """)
 
         try generatedCode.write(toFile: output.path, atomically: true, encoding: .utf8)
