@@ -88,13 +88,23 @@ extension GenerateTool {
         let data = try parseCompanyIdentifiersFile()
 
         var generatedCode = ""
-        let companies = companyIdentifiers(from: data)
+        // sorted, but not filtered — this backs a lossless correctness
+        // check, so every entry (including the internal-use 0xFFFF
+        // identifier) is covered.
+        let companies = data.sorted(by: { $0.key < $1.key })
 
         func 🖨(_ text: String) {
             generatedCode += text + "\n"
         }
 
-        // generate unit test for extensions
+        // One #expect() call *site*, not one per entry: swift-testing's
+        // macro expansion cost scales with the number of source-level
+        // #expect occurrences, not with how many times each runs, so a
+        // few thousand individually-unrolled #expect calls (whether in
+        // one function or split across many) is many minutes of type
+        // checking. A single parameterized @Test(arguments:) — data
+        // description, runtime loop — keeps compile time bounded
+        // regardless of entry count.
         generatedCode = """
             //
             //  CompanyIdentifierTests.swift
@@ -105,37 +115,44 @@ extension GenerateTool {
             import Testing
             @testable import Bluetooth
 
-            // swiftlint:disable type_body_length
-            #if !canImport(Darwin)
+            #if !canImport(Darwin) && Metadata
             @Suite
             struct CompanyIdentifierTests {
 
-                @Test func companies() {
+                struct Entry: Sendable {
+                    let id: UInt16
+                    let name: String
+                }
 
+                // A single array-literal expression with thousands of
+                // elements is pathologically slow for the type checker,
+                // same as an unrolled #expect() chain. Sequential
+                // append() calls keep each statement's type-checking
+                // cost independent of the others.
+                static var entries: [Entry] {
+                    var entries: [Entry] = []
+                    entries.reserveCapacity(\(companies.count))
 
             """
 
-        // generate test methods
-
-        for (id, name, memberName) in companies {
-
-            🖨(
-                """
-                        // \(name)
-                        #expect(CompanyIdentifier.\(memberName).rawValue == \(id))
-                        #expect(CompanyIdentifier.\(memberName).name == #\"\(name)\"#)
-                        #expect(CompanyIdentifier.\(memberName).description == #\"\(name)\"#)
-                    
-                """)
+        for (id, name) in companies {
+            🖨("        entries.append(Entry(id: \(id), name: #\"\(name)\"#))")
         }
 
         🖨(
             """
+                    return entries
                 }
 
+                @Test(arguments: entries)
+                func company(_ entry: Entry) {
+                    let identifier = CompanyIdentifier(rawValue: entry.id)
+                    #expect(identifier.rawValue == entry.id)
+                    #expect(identifier.name == entry.name)
+                    #expect(identifier.description == entry.name)
+                }
             }
             #endif
-            // swiftlint:enable type_body_length
             """)
 
         try generatedCode.write(toFile: output.path, atomically: true, encoding: .utf8)

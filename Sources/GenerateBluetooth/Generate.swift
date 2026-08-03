@@ -30,6 +30,16 @@ struct GenerateTool {
             try generateCompanyIdentifiers(
                 output: outputFile
             )
+        case .companyIdentifierMetadata:
+            // parse arguments
+            guard arguments.count == 3 else {
+                throw CommandError.invalidArguments(arguments)
+            }
+            let outputFile = URL(fileURLWithPath: arguments[2])
+            // generate files
+            try generateCompanyIdentifierMetadata(
+                output: outputFile
+            )
         case .companyIdentifierTests:
             // parse arguments
             guard arguments.count == 3 else {
@@ -55,7 +65,7 @@ struct GenerateTool {
             guard arguments.count == 3 else {
                 throw CommandError.invalidArguments(arguments)
             }
-            let outputFile = URL(fileURLWithPath: arguments[3])
+            let outputFile = URL(fileURLWithPath: arguments[2])
             // generate files
             try generateUnitIdentifierTests(
                 output: outputFile
@@ -72,6 +82,16 @@ struct GenerateTool {
                 type: uuidType,
                 output: outputFile
             )
+        case .uuidMetadata:
+            // parse arguments
+            guard arguments.count == 3 else {
+                throw CommandError.invalidArguments(arguments)
+            }
+            let outputFile = URL(fileURLWithPath: arguments[2])
+            // generate files
+            try generateBluetoothUUIDMetadata(
+                output: outputFile
+            )
         }
     }
 }
@@ -79,10 +99,12 @@ struct GenerateTool {
 enum CommandType: String {
 
     case companyIdentifier
+    case companyIdentifierMetadata
     case companyIdentifierTests
     case unitIdentifier
     case unitIdentifierTests
     case uuid
+    case uuidMetadata
 }
 
 enum CommandError: Error {

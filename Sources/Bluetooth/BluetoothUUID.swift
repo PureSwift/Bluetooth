@@ -56,7 +56,7 @@ extension BluetoothUUID: Equatable {
 extension BluetoothUUID: CustomStringConvertible {
 
     public var description: String {
-        #if Metadata && canImport(Foundation) && !os(WASI) && !hasFeature(Embedded)
+        #if Metadata
         if let name = self.metadata?.name {
             return "\(rawValue) (\(name))"
         } else {
@@ -73,7 +73,7 @@ extension BluetoothUUID: CustomStringConvertible {
 extension BluetoothUUID: LosslessStringConvertible {
 
     public init?(_ string: String) {
-        #if Metadata && canImport(Foundation) && !os(WASI) && !hasFeature(Embedded)
+        #if Metadata
         var rawValue = string
         var name: String?
         // Find UUID name

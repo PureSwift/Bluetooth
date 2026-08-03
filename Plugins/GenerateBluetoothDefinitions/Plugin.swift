@@ -21,6 +21,8 @@ struct GenerateBluetoothDefinitionsPlugin: BuildToolPlugin {
 
         // Generate Bluetooth Company Identifier Definitions
         try companyIdentifiersBuildCommands(for: context, target: target, commands: &commands)
+        // Generate Bluetooth Company Identifier Metadata (name lookup)
+        try companyIdentifierMetadataBuildCommands(for: context, target: target, commands: &commands)
         // Generate Bluetooth Company Identifier Unit Tests
         try companyIdentifierTestsBuildCommands(for: context, target: target, commands: &commands)
         // Generate Bluetooth Unit Identifier Definitions
@@ -44,6 +46,8 @@ struct GenerateBluetoothDefinitionsPlugin: BuildToolPlugin {
                 commands: &commands
             )
         }
+        // Generate Bluetooth UUID Metadata (name/type lookup)
+        try bluetoothUUIDMetadataBuildCommands(for: context, target: target, commands: &commands)
 
         return commands
     }

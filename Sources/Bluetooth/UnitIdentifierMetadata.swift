@@ -5,14 +5,7 @@
 //  Created by Alsey Coleman Miller on 1/12/25.
 //
 
-#if Metadata && canImport(Foundation) && !os(WASI) && !hasFeature(Embedded)
-#if canImport(FoundationEssentials)
-import FoundationEssentials
-#else
-import Foundation
-#endif
-import BluetoothMetadata
-
+#if Metadata
 public extension UnitIdentifier {
 
     /// The name of the unit.
