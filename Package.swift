@@ -206,12 +206,18 @@ if generateCode {
             ]
         )
     ]
-    package.targets[0].plugins = [
-        "GenerateBluetoothDefinitions"
-    ]
-    package.targets[4].plugins = [
-        "GenerateBluetoothDefinitions"
-    ]
+    // Name-based lookup, not a hardcoded index — the target array's
+    // order has changed before (silently detaching this plugin from
+    // BluetoothTests when a new target was inserted ahead of it) and
+    // will again.
+    for name in ["Bluetooth", "BluetoothTests"] {
+        guard let index = package.targets.firstIndex(where: { $0.name == name }) else {
+            fatalError("Missing target \(name)")
+        }
+        package.targets[index].plugins = [
+            "GenerateBluetoothDefinitions"
+        ]
+    }
 }
 
 if enableMacros {
