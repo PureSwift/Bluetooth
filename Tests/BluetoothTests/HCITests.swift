@@ -288,7 +288,13 @@ import Foundation
         #expect(localVersionInformation.lmpVersion == 0x08)
         #expect(localVersionInformation.lmpSubversion == 0x219A)
         #expect(localVersionInformation.manufacturer.rawValue == 0x000F)
+        // The description falls back to the raw value without the
+        // assigned-numbers metadata the Metadata trait gates.
+        #if Metadata
         #expect(localVersionInformation.manufacturer.description == "Broadcom Corporation")
+        #else
+        #expect(localVersionInformation.manufacturer.description == "15")
+        #endif
     }
 
     @Test func readDeviceAddress() async throws {

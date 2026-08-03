@@ -130,9 +130,14 @@ import Bluetooth
         (101...UInt8.max).forEach { #expect(GATTBatteryLevel(data: Data([$0])) == nil) }
 
         // test percentage
+        //
+        // `name`, `type`, and the description that falls back to `name`,
+        // come from the assigned-numbers metadata gated by the Metadata trait.
+        #if Metadata
         #expect(GATTBatteryPercentage.unitType.description == "percentage")
         #expect(GATTBatteryPercentage.unitType.name == "percentage")
         #expect(GATTBatteryPercentage.unitType.type == "org.bluetooth.unit.percentage")
+        #endif
         #expect(GATTBatteryPercentage.unitType == .percentage)
         (0...100).forEach { #expect(GATTBatteryPercentage(rawValue: $0) != nil) }
         (101...UInt8.max).forEach { #expect(GATTBatteryPercentage(rawValue: $0) == nil) }

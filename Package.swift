@@ -4,7 +4,6 @@ import CompilerPluginSupport
 
 // get environment variables
 let dynamicLibrary = Context.environment["SWIFT_BUILD_DYNAMIC_LIBRARY"] == "1"
-let buildMetadata = Context.environment["SWIFTPM_BLUETOOTH_METADATA"] != "0"
 let generateCode = Context.environment["SWIFTPM_ENABLE_PLUGINS"] != "0"
 let enableMacros = Context.environment["SWIFTPM_ENABLE_MACROS"] != "0"
 let buildDocs = Context.environment["BUILDING_FOR_DOCUMENTATION_GENERATION"] == "1"
@@ -53,6 +52,23 @@ var package = Package(
             targets: ["BluetoothSDP"]
         )
     ],
+    traits: [
+        .trait(
+            name: "Metadata",
+            description: """
+                Bluetooth SIG assigned-numbers metadata: the `name` \
+                properties of `CompanyIdentifier`, `BluetoothUUID` and \
+                `UnitIdentifier`.
+
+                Opt-in because it pulls in Foundation and a resource \
+                bundle, which makes the package neither Embedded-clean \
+                nor buildable outside SwiftPM. The numeric definitions \
+                themselves (`CompanyIdentifier.apple` and friends) are \
+                generated at build time and remain available without it.
+                """
+        ),
+        .default(enabledTraits: [])
+    ],
     targets: [
         .target(
             name: "Bluetooth"
@@ -100,7 +116,10 @@ var package = Package(
                 "Bluetooth",
                 .target(
                     name: "BluetoothMetadata",
-                    condition: .when(platforms: [.macOS, .linux, .macCatalyst, .windows])
+                    condition: .when(
+                        platforms: [.macOS, .linux, .macCatalyst, .windows],
+                        traits: ["Metadata"]
+                    )
                 ),
                 .target(
                     name: "BluetoothGAP",
@@ -124,11 +143,16 @@ var package = Package(
 )
 
 // Optional dependencies
-if buildMetadata {
-    package.targets[0].dependencies += [
-        "BluetoothMetadata"
-    ]
-}
+//
+// The metadata tables are reached only through `canImport`-guarded code
+// in `Sources/Bluetooth`, so conditioning the dependency on the trait is
+// enough to compile them out.
+package.targets[0].dependencies += [
+    .target(
+        name: "BluetoothMetadata",
+        condition: .when(traits: ["Metadata"])
+    )
+]
 
 if embeddedFoundation {
     package.dependencies += [
