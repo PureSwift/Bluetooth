@@ -46,6 +46,11 @@ var package = Package(
             name: "BluetoothHCI",
             type: libraryType,
             targets: ["BluetoothHCI"]
+        ),
+        .library(
+            name: "BluetoothSDP",
+            type: libraryType,
+            targets: ["BluetoothSDP"]
         )
     ],
     targets: [
@@ -83,6 +88,12 @@ var package = Package(
                 "BluetoothGAP"
             ]
         ),
+        .target(
+            name: "BluetoothSDP",
+            dependencies: [
+                "Bluetooth"
+            ]
+        ),
         .testTarget(
             name: "BluetoothTests",
             dependencies: [
@@ -101,6 +112,10 @@ var package = Package(
                 ),
                 .target(
                     name: "BluetoothHCI",
+                    condition: .when(platforms: [.macOS, .linux, .macCatalyst, .windows, .android])
+                ),
+                .target(
+                    name: "BluetoothSDP",
                     condition: .when(platforms: [.macOS, .linux, .macCatalyst, .windows, .android])
                 )
             ]
@@ -126,7 +141,7 @@ if embeddedFoundation {
         name: "FoundationEmbedded",
         package: "swift-embedded-foundation"
     )
-    for name in ["Bluetooth", "BluetoothGAP", "BluetoothGATT", "BluetoothHCI"] {
+    for name in ["Bluetooth", "BluetoothGAP", "BluetoothGATT", "BluetoothHCI", "BluetoothSDP"] {
         guard let index = package.targets.firstIndex(where: { $0.name == name }) else {
             fatalError("Missing target \(name)")
         }
