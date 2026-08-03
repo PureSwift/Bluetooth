@@ -18,38 +18,24 @@ jobs:
     - name: Test
       run: swift test -c ${{ matrix.config }} --no-parallel
   
+  # arm64 runs on ubuntu-24.04-arm, a real hosted ARM64 machine, not a
+  # cross-compilation target (unlike swift-arm.yml's armv6/armv7 jobs) —
+  # it builds and runs the test suite directly, with Docker pulling the
+  # arm64 variant of the same official Swift container images.
   linux:
-    name: Linux
+    name: Linux (${{ matrix.arch }}, ${{ matrix.container }}, ${{ matrix.config }})
     strategy:
       matrix:
+        arch: ["x86_64", "arm64"]
         container: ["swift:6.2.3", "swift:6.3.3"]
         config: ["debug", "release"]
         options: ["", "SWIFT_BUILD_DYNAMIC_LIBRARY=1"]
-    runs-on: ubuntu-latest
-    container: ${{ matrix.container }}-jammy
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Swift Version
-      run: swift --version
-    - name: Build
-      run: swift build -c ${{ matrix.config }}
-    - name: Test
-      run: swift test -c ${{ matrix.config }} --no-parallel
-
-  # Native aarch64, unlike swift-arm.yml's armv6/armv7 jobs: ubuntu-24.04-arm
-  # is a real hosted ARM64 machine, not a cross-compilation target, so it
-  # builds and runs the test suite directly with the same official Swift
-  # container images the x86_64 `linux` job uses above (multi-arch, so Docker
-  # pulls the arm64 variant automatically).
-  linux-arm64:
-    name: Linux (ARM64)
-    strategy:
-      matrix:
-        container: ["swift:6.2.3", "swift:6.3.3"]
-        config: ["debug", "release"]
-        options: ["", "SWIFT_BUILD_DYNAMIC_LIBRARY=1"]
-    runs-on: ubuntu-24.04-arm
+        include:
+          - arch: x86_64
+            runner: ubuntu-latest
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
     container: ${{ matrix.container }}-jammy
     steps:
     - name: Checkout
