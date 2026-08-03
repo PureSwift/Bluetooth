@@ -1,0 +1,34 @@
+name: Swift Musl
+on: [push]
+jobs:
+
+  # The official Swift Static Linux SDK produces fully static musl
+  # binaries with no libc dependency, so they run on any Linux kernel of
+  # the matching CPU architecture regardless of the host's own libc.
+  # Build only, not test: the static SDK's swift_static resources don't
+  # ship a Testing.swiftmodule, so anything importing swift-testing
+  # fails to compile against this SDK regardless of host/target match.
+  musl:
+    name: Linux (musl, ${{ matrix.arch }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x86_64
+            triple: x86_64-swift-linux-musl
+            runner: ubuntu-latest
+          - arch: aarch64
+            triple: aarch64-swift-linux-musl
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    container: swift:6.3.3-jammy
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Swift Version
+      run: swift --version
+    - name: Install Static Linux SDK
+      run: |
+        swift sdk install https://download.swift.org/swift-6.3.3-release/static-sdk/swift-6.3.3-RELEASE/swift-6.3.3-RELEASE_static-linux-0.1.0.artifactbundle.tar.gz --checksum 87c3eaf908e67c0e13a84367119e12273cec1d2cd3d81f7d74bb36722d6b607b
+    - name: Build
+      run: swift build --swift-sdk ${{ matrix.triple }}
