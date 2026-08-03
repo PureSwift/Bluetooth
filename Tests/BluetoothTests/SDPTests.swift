@@ -15,6 +15,21 @@ import Bluetooth
 
 @Suite struct SDPTests {
 
+    @Test func uint128BigEndianBytes() {
+
+        // 15 leading zero bytes then 0x01, most-significant byte
+        // first, must equal the numeric value 1 — not just round-trip
+        // with itself, which a consistently-reversed implementation
+        // would also pass.
+        let one = [UInt8](repeating: 0, count: 15) + [0x01]
+        #expect(UInt128(bigEndianBytes: one) == 1)
+        #expect((1 as UInt128).bigEndianBytes == one)
+
+        let value = UInt128(bigEndianBytes: Array(0 ..< 16))
+        #expect(value.bigEndianBytes == Array(0 ..< 16))
+        #expect(value == UInt128(0x000102030405060708090A0B0C0D0E0F))
+    }
+
     @Test func dataElementRoundTrip() {
 
         let elements: [SDPDataElement] = [
