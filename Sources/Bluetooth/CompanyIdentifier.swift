@@ -50,7 +50,7 @@ extension CompanyIdentifier: ExpressibleByIntegerLiteral {
 extension CompanyIdentifier: CustomStringConvertible {
 
     public var description: String {
-        #if Metadata && canImport(Foundation) && !os(WASI) && !hasFeature(Embedded)
+        #if Metadata
         return name ?? rawValue.description
         #else
         return rawValue.description
