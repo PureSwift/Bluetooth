@@ -25,6 +25,10 @@ jobs:
   linux:
     name: Linux (${{ matrix.arch }}, ${{ matrix.container }}, ${{ matrix.config }})
     strategy:
+      # One failing cell shouldn't hide the others' results — knowing
+      # which arch/toolchain/config combinations fail is the whole point
+      # of the matrix when diagnosing platform-specific behavior.
+      fail-fast: false
       matrix:
         arch: ["x86_64", "arm64"]
         container: ["swift:6.2.3", "swift:6.3.3"]
