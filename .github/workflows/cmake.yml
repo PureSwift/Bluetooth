@@ -13,7 +13,9 @@ jobs:
       matrix:
         container: ["swift:6.2.3", "swift:6.3.3"]
     runs-on: ubuntu-latest
-    container: ${{ matrix.container }}-jammy
+    # noble, not jammy like the other workflows: CMakeLists.txt requires
+    # CMake 3.26+, and jammy's apt only has 3.22. noble ships 3.28.
+    container: ${{ matrix.container }}-noble
     steps:
     - name: Checkout
       uses: actions/checkout@v4
