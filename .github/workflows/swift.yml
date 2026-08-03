@@ -37,6 +37,30 @@ jobs:
     - name: Test
       run: swift test -c ${{ matrix.config }} --no-parallel
 
+  # Native aarch64, unlike swift-arm.yml's armv6/armv7 jobs: ubuntu-24.04-arm
+  # is a real hosted ARM64 machine, not a cross-compilation target, so it
+  # builds and runs the test suite directly with the same official Swift
+  # container images the x86_64 `linux` job uses above (multi-arch, so Docker
+  # pulls the arm64 variant automatically).
+  linux-arm64:
+    name: Linux (ARM64)
+    strategy:
+      matrix:
+        container: ["swift:6.2.3", "swift:6.3.3"]
+        config: ["debug", "release"]
+        options: ["", "SWIFT_BUILD_DYNAMIC_LIBRARY=1"]
+    runs-on: ubuntu-24.04-arm
+    container: ${{ matrix.container }}-jammy
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Swift Version
+      run: swift --version
+    - name: Build
+      run: swift build -c ${{ matrix.config }}
+    - name: Test
+      run: swift test -c ${{ matrix.config }} --no-parallel
+
   # Run the full test suite on the Android x86_64 emulator with the official
   # Swift 6.3.2 Android SDK. x86_64 is the only Android ABI that GitHub-hosted
   # runners can hardware-accelerate (KVM), so it is the one architecture where
