@@ -24,7 +24,20 @@ extension UInt128: ByteValue {
     public var bytes: ByteValue {
         @_transparent
         get {
-            unsafeBitCast(self, to: ByteValue.self)
+            // Not unsafeBitCast: UInt128 and a 16-tuple of UInt8 can have
+            // different natural alignment (16 bytes vs 1), and a bit cast
+            // that has to round-trip through a stack temporary can then
+            // reinterpret the bits through a load/store that assumes the
+            // wrong alignment — harmless on x86_64's relaxed model, but a
+            // hardware alignment fault on arm64.
+            Swift.withUnsafeBytes(of: self) {
+                (
+                    $0[0], $0[1], $0[2], $0[3],
+                    $0[4], $0[5], $0[6], $0[7],
+                    $0[8], $0[9], $0[10], $0[11],
+                    $0[12], $0[13], $0[14], $0[15]
+                )
+            }
         }
 
         @_transparent
@@ -34,7 +47,12 @@ extension UInt128: ByteValue {
     }
 
     public init(bytes: ByteValue) {
-        self = unsafeBitCast(bytes, to: Self.self)
+        // loadUnaligned, not unsafeBitCast/load(as:): the source tuple's
+        // 1-byte alignment doesn't satisfy UInt128's natural alignment,
+        // which load(as:) requires but loadUnaligned does not.
+        self = Swift.withUnsafeBytes(of: bytes) {
+            $0.loadUnaligned(as: Self.self)
+        }
     }
 }
 
