@@ -195,6 +195,10 @@ target_compile_options(Bluetooth PRIVATE
 # ---------------------------------------------------------------------
 # BluetoothABI — the Swift implementations of the C entry points
 # ---------------------------------------------------------------------
+#
+# Includes the 75 pure `sdp_*` symbols (data model, PDU codec, attribute
+# accessors) alongside the rest of the C ABI — they ship in the same
+# shared object, so there's no separate BluetoothSDP target here.
 
 file(GLOB BLUETOOTH_ABI_SOURCES CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_SOURCE_DIR}/Sources/BluetoothABI/*.swift"
@@ -209,23 +213,6 @@ target_compile_options(BluetoothABI PRIVATE
     "SHELL:-package-name Bluetooth")
 
 target_link_libraries(BluetoothABI PUBLIC Bluetooth CBluetooth)
-
-# ---------------------------------------------------------------------
-# BluetoothSDP — the Swift implementations of the pure sdp.c symbols
-# ---------------------------------------------------------------------
-
-file(GLOB BLUETOOTH_SDP_SOURCES CONFIGURE_DEPENDS
-    "${CMAKE_CURRENT_SOURCE_DIR}/Sources/BluetoothSDP/*.swift")
-
-add_library(BluetoothSDP STATIC ${BLUETOOTH_SDP_SOURCES})
-
-set_target_properties(BluetoothSDP PROPERTIES
-    Swift_MODULE_NAME BluetoothSDP)
-
-target_compile_options(BluetoothSDP PRIVATE
-    "SHELL:-package-name Bluetooth")
-
-target_link_libraries(BluetoothSDP PUBLIC Bluetooth CBluetooth)
 
 # ---------------------------------------------------------------------
 # libbluetooth-util.so.0 — the installable artifact
@@ -260,11 +247,10 @@ if(BLUETOOTH_ABI_SHARED)
     target_link_options(bluetooth-util PRIVATE
         "LINKER:--whole-archive"
         "LINKER:$<TARGET_FILE:BluetoothABI>"
-        "LINKER:$<TARGET_FILE:BluetoothSDP>"
         "LINKER:$<TARGET_FILE:CBluetooth>"
         "LINKER:--no-whole-archive")
 
-    add_dependencies(bluetooth-util BluetoothABI BluetoothSDP CBluetooth)
+    add_dependencies(bluetooth-util BluetoothABI CBluetooth)
 
     # Linked normally: only the parts of the engine actually referenced.
     target_link_libraries(bluetooth-util PRIVATE Bluetooth)

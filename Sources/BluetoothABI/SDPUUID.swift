@@ -1,5 +1,5 @@
 //
-//  UUID.swift
+//  SDPUUID.swift
 //  Bluetooth
 //
 //  Swift implementations of SDP's `uuid_t` family, bound to the

@@ -1,5 +1,5 @@
 //
-//  Record.swift
+//  SDPRecord.swift
 //  Bluetooth
 //
 //  Swift implementations of `sdp_record_t` allocation, attribute

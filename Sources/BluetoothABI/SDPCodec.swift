@@ -1,5 +1,5 @@
 //
-//  Codec.swift
+//  SDPCodec.swift
 //  Bluetooth
 //
 //  Swift implementations of the SDP PDU wire-format codec, bound to

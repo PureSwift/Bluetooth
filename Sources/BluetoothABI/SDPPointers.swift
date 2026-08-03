@@ -1,5 +1,5 @@
 //
-//  Pointers.swift
+//  SDPPointers.swift
 //  Bluetooth
 //
 //  Stable raw-pointer helpers for `sdp_data_t.val` and `uuid_t.value`.

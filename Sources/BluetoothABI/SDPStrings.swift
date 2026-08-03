@@ -1,5 +1,5 @@
 //
-//  Strings.swift
+//  SDPStrings.swift
 //  Bluetooth
 //
 //  Swift implementations of the SDP UUID/record string formatters,

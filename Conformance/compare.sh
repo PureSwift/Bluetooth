@@ -16,9 +16,10 @@
 #                           points at an extracted BlueZ source tree.
 #   conformance_sdp.c       the 75 pure `sdp_*` symbols (data model, PDU
 #                           codec, attribute accessors) implemented in
-#                           BluetoothSDP. Unlike bt_uuid_*, the system
-#                           library exports all of these directly, so
-#                           this one also links straight against it.
+#                           BluetoothABI alongside the rest of the C
+#                           ABI. Unlike bt_uuid_*, the system library
+#                           exports all of these directly, so this one
+#                           also links straight against it.
 #
 # Both sides of each comparison compile against the *same* (vendored)
 # headers, so the only variable is which implementation is linked.
@@ -28,7 +29,7 @@
 #
 # Usage:
 #     SWIFTPM_BLUETOOTH_CABI=1 swift build
-#     Conformance/compare.sh [path-to-libBluetoothABI.so] [path-to-libBluetoothSDP.so]
+#     Conformance/compare.sh [path-to-libBluetoothABI.so]
 #
 # Environment:
 #     BT_REFERENCE_LIB   path to the reference libbluetooth.so.3
@@ -40,7 +41,6 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 BUILD="${ROOT}/.build/conformance"
 TRIPLE="$(swift -print-target-info | sed -n 's/.*"unversionedTriple": "\([^"]*\)".*/\1/p' | head -1)"
 OURS="${1:-${ROOT}/.build/${TRIPLE}/debug/libBluetoothABI.so}"
-OURS_SDP="${2:-${ROOT}/.build/${TRIPLE}/debug/libBluetoothSDP.so}"
 
 find_reference() {
     local found
@@ -153,16 +153,12 @@ fi
 
 # --- sdp_* family (data model, PDU codec, attribute accessors) --------
 
-if [[ -f "${OURS_SDP}" ]]; then
-    cc "${CFLAGS[@]}" -o "${BUILD}/sdp.reference" \
-        "${ROOT}/Conformance/conformance_sdp.c" "${REFERENCE}"
-    cc "${CFLAGS[@]}" -o "${BUILD}/sdp.ours" \
-        "${ROOT}/Conformance/conformance_sdp.c" "${OURS_SDP}" \
-        -Wl,-rpath,"$(dirname "${OURS_SDP}")"
+cc "${CFLAGS[@]}" -o "${BUILD}/sdp.reference" \
+    "${ROOT}/Conformance/conformance_sdp.c" "${REFERENCE}"
+cc "${CFLAGS[@]}" -o "${BUILD}/sdp.ours" \
+    "${ROOT}/Conformance/conformance_sdp.c" "${OURS}" \
+    -Wl,-rpath,"$(dirname "${OURS}")"
 
-    compare sdp "${BUILD}/sdp.reference" "${BUILD}/sdp.ours" || status=1
-else
-    echo "conformance/sdp: skipped (${OURS_SDP} not found)"
-fi
+compare sdp "${BUILD}/sdp.reference" "${BUILD}/sdp.ours" || status=1
 
 exit "${status}"

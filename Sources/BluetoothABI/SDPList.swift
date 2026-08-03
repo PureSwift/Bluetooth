@@ -1,5 +1,5 @@
 //
-//  List.swift
+//  SDPList.swift
 //  Bluetooth
 //
 //  Swift implementations of the `sdp_list_t` singly-linked list, bound

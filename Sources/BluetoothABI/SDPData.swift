@@ -1,5 +1,5 @@
 //
-//  Data.swift
+//  SDPData.swift
 //  Bluetooth
 //
 //  Swift implementations of the `sdp_data_t` allocator, bound to the

@@ -1,5 +1,5 @@
 //
-//  Attributes.swift
+//  SDPAttributes.swift
 //  Bluetooth
 //
 //  Swift implementations of the `sdp_record_t` attribute get/set

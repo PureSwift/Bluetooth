@@ -260,18 +260,15 @@ if enableMacros {
 // Off by default so the ordinary Swift build stays dependency-free and
 // Embedded-clean. Enable with `SWIFTPM_BLUETOOTH_CABI=1` to build the
 // `bluetooth.h` C surface (`CBluetooth`, vendored BlueZ headers + shims)
-// and its Swift implementations (`BluetoothABI`).
+// and its Swift implementations (`BluetoothABI`, which also carries the
+// 75 pure `sdp_*` symbols — they ship in the same shared object as the
+// rest of the C ABI, so there's no separate BluetoothSDP target here).
 if buildCABI {
     package.products += [
         .library(
             name: "BluetoothABI",
             type: .dynamic,
             targets: ["BluetoothABI"]
-        ),
-        .library(
-            name: "BluetoothSDP",
-            type: .dynamic,
-            targets: ["BluetoothSDP"]
         )
     ]
     package.targets += [
@@ -293,21 +290,6 @@ if buildCABI {
             name: "BluetoothABITests",
             dependencies: [
                 "BluetoothABI",
-                "CBluetooth",
-                "Bluetooth"
-            ]
-        ),
-        .target(
-            name: "BluetoothSDP",
-            dependencies: [
-                "Bluetooth",
-                "CBluetooth"
-            ]
-        ),
-        .testTarget(
-            name: "BluetoothSDPTests",
-            dependencies: [
-                "BluetoothSDP",
                 "CBluetooth",
                 "Bluetooth"
             ]

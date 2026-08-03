@@ -48,5 +48,4 @@ every consumer reads and walks their fields directly, unlike the socket
 handles elsewhere in `libbluetooth` — so their layout, not an opaque
 pointer, is the ABI contract. The `@c` functions in `BluetoothABI` operate
 on these imported C types directly (the same pattern already used for
-`bdaddr_t` and `bt_uuid_t`), converting to and from the idiomatic types in
-`BluetoothSDP` where a conversion is meaningful.
+`bdaddr_t` and `bt_uuid_t`).
