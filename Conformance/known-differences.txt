@@ -1,0 +1,55 @@
+# Accepted differences between the reference libbluetooth and ours.
+#
+# Every line here is matched verbatim against the differing lines of the
+# conformance diff (either side). A difference not listed here fails the
+# run. Blank lines and `#` comments are ignored.
+#
+# Add an entry only with a written justification below it.
+
+# ---------------------------------------------------------------------
+# bt_compidtostr: metadata source
+#
+# The reference is a hand-maintained C switch, frozen at the BlueZ
+# release date. Ours reads the Bluetooth SIG assigned-numbers metadata
+# shipped in BluetoothMetadata, which tracks the published list. The two
+# therefore disagree wherever the SIG has changed an assignment since
+# the reference table was last updated. Three such cases exist against
+# BlueZ 5.85 / libbluetooth 5.82:
+#
+#   0     the SIG renamed "Ericsson Technology Licensing" to "Ericsson AB"
+#   1000  the SIG withdrew this assignment; BlueZ still carries the old
+#         name "Reiner Kartengeraete GmbH & Co. KG."
+#   2393  assigned to "HerdDogg, Inc" after the reference table was frozen
+#
+# Consumers that display the string see a more current name; none of
+# these change the returned pointer's lifetime or the "not assigned"
+# fallback contract.
+bt_compidtostr(0) = "Ericsson Technology Licensing"
+bt_compidtostr(0) = "Ericsson AB"
+bt_compidtostr(1000) = "Reiner Kartengeraete GmbH & Co. KG."
+bt_compidtostr(1000) = "not assigned"
+bt_compidtostr(2393) = "not assigned"
+bt_compidtostr(2393) = "HerdDogg, Inc"
+
+# ---------------------------------------------------------------------
+# sdp_uuid16_cmp: memcmp's exact magnitude is not a real contract
+#
+# The reference is `memcmp(&u1->value.uuid16, &u2->value.uuid16, 2)`.
+# C only specifies memcmp's *sign*, not its magnitude, and the
+# magnitude turns out to be genuinely unstable: calling the real libc
+# memcmp on the same two bytes from Swift gives -256 at -O and -1 at
+# -Onone, and neither matches the reference's own -8388608 — three
+# different magnitudes from three compilations of the same
+# byte-for-byte comparison. Chasing an exact match here would mean
+# matching an implementation detail of one specific compiler's codegen
+# on one specific build, not a documented behavior.
+#
+# sdp_uuid16_cmp is used exclusively as a `sdp_comp_func_t` three-way
+# comparator (sdp_list_insert_sorted / sdp_list_find), where only the
+# sign is ever inspected. Our implementation computes the byte
+# difference explicitly instead of calling memcmp, which is
+# deterministic and always sign-correct, but does not chase glibc's
+# specific magnitude. Confirmed: both sides return a negative value
+# for this input, i.e. they agree on the only thing that matters.
+uuid16_cmp(differ) = -8388608
+uuid16_cmp(differ) = -1

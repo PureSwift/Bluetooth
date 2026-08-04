@@ -9,6 +9,11 @@ let enableMacros = Context.environment["SWIFTPM_ENABLE_MACROS"] != "0"
 let buildDocs = Context.environment["BUILDING_FOR_DOCUMENTATION_GENERATION"] == "1"
 let embeddedFoundation = Context.environment["SWIFTPM_EMBEDDED_FOUNDATION"] == "1"
 
+// The C ABI adds targets and a product, which traits cannot gate — they
+// condition dependencies and build settings, not the target graph — so
+// it stays an environment variable.
+let buildCABI = Context.environment["SWIFTPM_BLUETOOTH_CABI"] == "1"
+
 // force building as dynamic library
 let libraryType: PackageDescription.Product.Library.LibraryType? = dynamicLibrary ? .dynamic : nil
 
@@ -247,5 +252,47 @@ if enableMacros {
     ]
     package.targets[0].dependencies += [
         "BluetoothMacros"
+    ]
+}
+
+// C ABI (libbluetooth replacement)
+//
+// Off by default so the ordinary Swift build stays dependency-free and
+// Embedded-clean. Enable with `SWIFTPM_BLUETOOTH_CABI=1` to build the
+// `bluetooth.h` C surface (`CBluetooth`, vendored BlueZ headers + shims)
+// and its Swift implementations (`BluetoothABI`, which also carries the
+// 75 pure `sdp_*` symbols — they ship in the same shared object as the
+// rest of the C ABI, so there's no separate BluetoothSDP target here).
+if buildCABI {
+    package.products += [
+        .library(
+            name: "BluetoothABI",
+            type: .dynamic,
+            targets: ["BluetoothABI"]
+        )
+    ]
+    package.targets += [
+        .target(
+            name: "CBluetooth",
+            exclude: [
+                "README.md",
+                "include/bluetooth/LICENSE"
+            ]
+        ),
+        .target(
+            name: "BluetoothABI",
+            dependencies: [
+                "Bluetooth",
+                "CBluetooth"
+            ]
+        ),
+        .testTarget(
+            name: "BluetoothABITests",
+            dependencies: [
+                "BluetoothABI",
+                "CBluetooth",
+                "Bluetooth"
+            ]
+        )
     ]
 }

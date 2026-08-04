@@ -1,0 +1,36 @@
+name: CMake
+on: [push]
+jobs:
+
+  # Verifies the CMake packaging path (CMakeLists.txt) that builds
+  # libbluetooth-util.so independently of SwiftPM's own build graph,
+  # since soname/symbol-versioning/install-name aren't expressible in
+  # Package.swift. SwiftPM remains the primary build used by the other
+  # workflows; this only guards CMakeLists.txt from silently drifting.
+  cmake:
+    name: CMake
+    strategy:
+      fail-fast: false
+      matrix:
+        # 6.3+ only, unlike the SwiftPM workflows: the C ABI layer this
+        # builds is bound with `@c`, which 6.2 rejects as an unknown
+        # attribute. The rest of the package still builds on 6.2 because
+        # the C ABI targets are off unless SWIFTPM_BLUETOOTH_CABI=1.
+        container: ["swift:6.3.3"]
+    runs-on: ubuntu-latest
+    # noble, not jammy like the other workflows: CMakeLists.txt requires
+    # CMake 3.26+, and jammy's apt only has 3.22. noble ships 3.28.
+    container: ${{ matrix.container }}-noble
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Swift Version
+      run: swift --version
+    - name: Install CMake and Ninja
+      run: apt-get update && apt-get install -y cmake ninja-build
+    - name: Configure
+      run: cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+    - name: Build
+      run: cmake --build build
+    - name: Check exported symbols
+      run: cmake --build build --target check-exports

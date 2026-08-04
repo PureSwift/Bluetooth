@@ -1,0 +1,118 @@
+# The exported ABI surface of libbluetooth-util.so.0, asserted by
+# Scripts/check-exports.sh. One symbol per line; `#` comments and blank
+# lines are ignored. Both missing and extra symbols fail the check.
+#
+# The `bluetooth.c` entry points of libbluetooth (17)
+ba2oui
+ba2str
+ba2strlc
+bachk
+bafprintf
+baprintf
+basnprintf
+basprintf
+baswap
+batostr
+bt_compidtostr
+bt_error
+bt_free
+bt_malloc
+bt_malloc0
+str2ba
+strtoba
+#
+# The bt_uuid_* family (10). Upstream BlueZ keeps these in
+# libbluetooth-internal.a and exports none of them; we export them
+# deliberately, which is the point of shipping this library separately.
+bt_string_to_uuid
+bt_uuid128_create
+bt_uuid16_cmp
+bt_uuid16_create
+bt_uuid32_create
+bt_uuid_cmp
+bt_uuid_strcmp
+bt_uuid_to_le
+bt_uuid_to_string
+bt_uuid_to_uuid128
+#
+# The pure (non-socket) sdp.c symbols (75): the SDP data model
+# (sdp_data_t, sdp_list_t), the PDU wire-format codec, the
+# sdp_record_t attribute accessors, and the SDP uuid_t family (a
+# distinct type from bt_uuid_t above). The socket/session half
+# (sdp_connect, sdp_process, the register/update/unregister and async
+# request families) belongs to BluetoothLinux.
+sdp_add_lang_attr
+sdp_append_to_buf
+sdp_append_to_pdu
+sdp_attr_add
+sdp_attr_add_new
+sdp_attr_remove
+sdp_attr_replace
+sdp_attrid_comp_func
+sdp_copy_record
+sdp_data_alloc
+sdp_data_alloc_with_length
+sdp_data_free
+sdp_data_get
+sdp_extract_attr
+sdp_extract_pdu
+sdp_extract_seqtype
+sdp_gen_pdu
+sdp_gen_record_pdu
+sdp_get_access_protos
+sdp_get_add_access_protos
+sdp_get_database_state
+sdp_get_group_id
+sdp_get_int_attr
+sdp_get_lang_attr
+sdp_get_profile_descs
+sdp_get_proto_desc
+sdp_get_proto_port
+sdp_get_record_state
+sdp_get_server_ver
+sdp_get_service_avail
+sdp_get_service_id
+sdp_get_service_ttl
+sdp_get_string_attr
+sdp_get_supp_feat
+sdp_get_uuidseq_attr
+sdp_list_append
+sdp_list_free
+sdp_list_insert_sorted
+sdp_list_remove
+sdp_pattern_add_uuid
+sdp_pattern_add_uuidseq
+sdp_profile_uuid2strn
+sdp_proto_uuid2strn
+sdp_record_alloc
+sdp_record_free
+sdp_record_print
+sdp_seq_alloc
+sdp_seq_alloc_with_length
+sdp_seq_append
+sdp_set_access_protos
+sdp_set_add_access_protos
+sdp_set_attrid
+sdp_set_group_id
+sdp_set_info_attr
+sdp_set_lang_attr
+sdp_set_profile_descs
+sdp_set_seq_len
+sdp_set_service_id
+sdp_set_supp_feat
+sdp_set_url_attr
+sdp_set_uuidseq_attr
+sdp_svclass_uuid2strn
+sdp_uuid128_cmp
+sdp_uuid128_create
+sdp_uuid128_to_uuid
+sdp_uuid16_cmp
+sdp_uuid16_create
+sdp_uuid16_to_uuid128
+sdp_uuid2strn
+sdp_uuid32_create
+sdp_uuid32_to_uuid128
+sdp_uuid_cmp
+sdp_uuid_extract
+sdp_uuid_to_proto
+sdp_uuid_to_uuid128
