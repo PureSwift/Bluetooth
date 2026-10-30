@@ -139,7 +139,7 @@ internal extension UInt128 {
     }
 }
 
-#if canImport(Darwin)
+#if canImport(Darwin) && !hasFeature(Embedded)
 /// A 128-bit signed integer value type.
 @frozen
 public struct UInt128: Sendable {
