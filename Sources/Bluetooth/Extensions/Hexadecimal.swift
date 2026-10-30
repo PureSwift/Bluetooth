@@ -38,7 +38,13 @@ package extension String {
     init(hexadecimal byte: UInt8) {
         let length = 2
         #if hasFeature(Embedded) || (canImport(Darwin) && DEBUG)
-        self.init(format: "%02X", length: length, byte)!
+        // Not `snprintf`: calling a variadic C function through a non-variadic
+        // declaration passes the byte in the wrong place on arm64 Darwin.
+        let digits: [UInt8] = [
+            0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37,
+            0x38, 0x39, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46
+        ]
+        self.init(decoding: [digits[Int(byte >> 4)], digits[Int(byte & 0x0F)]], as: UTF8.self)
         #else
         self.init(byte, radix: 16, uppercase: true)
         // Add Zero padding
