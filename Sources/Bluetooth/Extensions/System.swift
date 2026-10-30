@@ -5,7 +5,7 @@
 //  Created by Alsey Coleman Miller on 11/7/24.
 //
 
-#if canImport(Darwin)
+#if canImport(Darwin) && !hasFeature(Embedded)
 import Darwin
 #elseif os(Windows)
 import ucrt

@@ -539,7 +539,7 @@ extension HCIError: CustomStringConvertible {
 
 // MARK: - CustomNSError
 
-#if canImport(Darwin)
+#if canImport(Darwin) && !hasFeature(Embedded)
 
 extension HCIError: CustomNSError {
 

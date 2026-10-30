@@ -5,8 +5,10 @@
 //  Created by Alsey Coleman Miller on 4/12/22.
 //
 
-// Embedded Swift currently lacks the concurrency runtime (Task, AsyncThrowingStream) this relies on.
-#if !hasFeature(Embedded)
+#if hasFeature(Embedded)
+// Embedded Swift does not import the concurrency module implicitly.
+import _Concurrency
+#endif
 
 /// Async Stream that will produce values until `stop()` is called or task is cancelled.
 @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
@@ -55,6 +57,17 @@ public struct AsyncIndefiniteStream<Element: Sendable>: AsyncSequence, Sendable 
         storage.onTermination = onTermination
         let stream = AsyncThrowingStream<Element, Error>(Element.self, bufferingPolicy: .bufferingNewest(bufferSize)) { continuation in
             storage.continuation = continuation
+            #if hasFeature(Embedded)
+            // Weak references are unavailable in Embedded Swift; the storage outlives the stream it owns.
+            continuation.onTermination = { [unowned(unsafe) storage] in
+                switch $0 {
+                case .cancelled:
+                    storage.stop()
+                default:
+                    break
+                }
+            }
+            #else
             continuation.onTermination = { [weak storage] in
                 switch $0 {
                 case .cancelled:
@@ -63,6 +76,7 @@ public struct AsyncIndefiniteStream<Element: Sendable>: AsyncSequence, Sendable 
                     break
                 }
             }
+            #endif
             build(Continuation(continuation))
         }
         storage.stream = stream
@@ -87,6 +101,8 @@ public extension AsyncIndefiniteStream {
 
     struct AsyncIterator: AsyncIteratorProtocol {
 
+        public typealias Failure = Error
+
         private(set) var iterator: AsyncThrowingStream<Element, Error>.AsyncIterator
 
         init(_ iterator: AsyncThrowingStream<Element, Error>.AsyncIterator) {
@@ -96,6 +112,14 @@ public extension AsyncIndefiniteStream {
         @inline(__always)
         public mutating func next() async throws -> Element? {
             return try await iterator.next()
+        }
+
+        /// Used by `for try await`. Without it, the default implementation casts
+        /// the error thrown by `next()`, which Embedded Swift cannot do.
+        @available(macOS 15.0, iOS 18.0, watchOS 11.0, tvOS 18.0, visionOS 2.0, *)
+        @inline(__always)
+        public mutating func next(isolation actor: isolated (any Actor)?) async throws(Error) -> Element? {
+            return try await iterator.next(isolation: actor)
         }
     }
 }
@@ -173,7 +197,9 @@ internal extension AsyncIndefiniteStream {
     }
 }
 
-#if canImport(Darwin)
+#if hasFeature(Embedded)
+// Embedded Swift runs the concurrency runtime on a single thread.
+#elseif canImport(Darwin)
 import Darwin
 #elseif canImport(Glibc)
 import Glibc
@@ -188,14 +214,14 @@ internal final class Lock: @unchecked Sendable {
 
     #if canImport(WinSDK)
     private var criticalSection = CRITICAL_SECTION()
-    #elseif canImport(Darwin) || canImport(Glibc) || canImport(Android)
+    #elseif !hasFeature(Embedded) && (canImport(Darwin) || canImport(Glibc) || canImport(Android))
     private var mutex = pthread_mutex_t()
     #endif
 
     init() {
         #if canImport(WinSDK)
         InitializeCriticalSection(&criticalSection)
-        #elseif canImport(Darwin) || canImport(Glibc) || canImport(Android)
+        #elseif !hasFeature(Embedded) && (canImport(Darwin) || canImport(Glibc) || canImport(Android))
         pthread_mutex_init(&mutex, nil)
         #endif
     }
@@ -203,7 +229,7 @@ internal final class Lock: @unchecked Sendable {
     deinit {
         #if canImport(WinSDK)
         DeleteCriticalSection(&criticalSection)
-        #elseif canImport(Darwin) || canImport(Glibc) || canImport(Android)
+        #elseif !hasFeature(Embedded) && (canImport(Darwin) || canImport(Glibc) || canImport(Android))
         pthread_mutex_destroy(&mutex)
         #endif
     }
@@ -211,7 +237,7 @@ internal final class Lock: @unchecked Sendable {
     func lock() {
         #if canImport(WinSDK)
         EnterCriticalSection(&criticalSection)
-        #elseif canImport(Darwin) || canImport(Glibc) || canImport(Android)
+        #elseif !hasFeature(Embedded) && (canImport(Darwin) || canImport(Glibc) || canImport(Android))
         pthread_mutex_lock(&mutex)
         #endif
         // Single-threaded platforms (e.g. WASI) need no locking.
@@ -220,10 +246,8 @@ internal final class Lock: @unchecked Sendable {
     func unlock() {
         #if canImport(WinSDK)
         LeaveCriticalSection(&criticalSection)
-        #elseif canImport(Darwin) || canImport(Glibc) || canImport(Android)
+        #elseif !hasFeature(Embedded) && (canImport(Darwin) || canImport(Glibc) || canImport(Android))
         pthread_mutex_unlock(&mutex)
         #endif
     }
 }
-
-#endif
