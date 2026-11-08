@@ -26,16 +26,7 @@ package extension String {
         #endif
     }
 
-    #if hasFeature(Embedded)
-    // Can't use `CVarArg` in Embedded Swift
-    init?(format: String, length: Int, _ value: UInt8) {
-        var cString: [CChar] = .init(repeating: 0, count: length + 1)
-        guard _snprintf_uint8_t(&cString, cString.count, format, value) >= 0 else {
-            return nil
-        }
-        self.init(cString: cString)
-    }
-    #elseif canImport(Darwin)
+    #if !hasFeature(Embedded) && canImport(Darwin)
     init?<T: CVarArg>(format: String, length: Int, _ value: T) {
         var cString: [CChar] = .init(repeating: 0, count: length + 1)
         guard snprintf(ptr: &cString, cString.count, format, value) >= 0 else {
