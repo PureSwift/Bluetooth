@@ -5,6 +5,8 @@
 //  Created by Alsey Coleman Miller on 4/12/22.
 //
 
+#if !EMBEDDED_NO_CONCURRENCY
+
 #if hasFeature(Embedded)
 // Embedded Swift does not import the concurrency module implicitly.
 import _Concurrency
@@ -251,3 +253,5 @@ internal final class Lock: @unchecked Sendable {
         #endif
     }
 }
+
+#endif
