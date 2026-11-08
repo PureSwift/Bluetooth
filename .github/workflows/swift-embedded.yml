@@ -7,7 +7,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        swift: ["6.3.2"]
+        swift: ["6.4.2"]
         target: ["Bluetooth", "BluetoothGAP", "BluetoothGATT", "BluetoothHCI"]
         config: ["debug", "release"]
         foundation: ["0", "1"]
@@ -28,3 +28,25 @@ jobs:
           swift sdk list
       - name: Build
         run: SWIFTPM_BLUETOOTH_METADATA=0 SWIFTPM_ENABLE_MACROS=0 SWIFTPM_EMBEDDED_FOUNDATION=${{ matrix.foundation }} swift build --target ${{ matrix.target }} -c ${{ matrix.config }} --swift-sdk swift-${{ matrix.swift }}-RELEASE_wasm-embedded
+  build-bare-metal:
+    name: Build for bare metal Embedded Swift
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - triple: x86_64-unknown-none-elf
+            targets: Bluetooth BluetoothGAP BluetoothGATT BluetoothHCI
+          - triple: armv7-none-none-eabi
+            targets: Bluetooth BluetoothGAP BluetoothGATT BluetoothHCI
+          # No _Concurrency module for this triple; BluetoothHCI's API needs one.
+          - triple: aarch64-none-none-elf
+            targets: Bluetooth BluetoothGAP BluetoothGATT
+    container: swift:6.4.2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Swift Version
+        run: swift --version
+      - name: Build
+        run: .github/scripts/embedded-bare-metal.sh ${{ matrix.triple }} ${{ matrix.targets }}
