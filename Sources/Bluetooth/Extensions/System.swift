@@ -36,13 +36,3 @@ package func _memcmp(
     memcmp(p1, p2, size)
 }
 #endif
-
-#if hasFeature(Embedded)
-@_silgen_name("snprintf")
-package func _snprintf_uint8_t(
-    _ pointer: UnsafeMutablePointer<CChar>,
-    _ length: Int,
-    _ format: UnsafePointer<CChar>,
-    _ arg: UInt8
-) -> Int32
-#endif
