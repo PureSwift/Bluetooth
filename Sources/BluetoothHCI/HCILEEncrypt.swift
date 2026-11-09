@@ -15,6 +15,11 @@ public extension BluetoothHostControllerInterface {
     ///
     /// The Commnad is used to request the Controller to encrypt the Plaintext_Data in the command using the Key given in the command
     /// and returns the Encrypted_Data to the Host.
+    ///
+    /// Transparent because unoptimized arm64 Linux builds pass the `UInt128`
+    /// arguments of an async call in the wrong registers, which crashes the
+    /// callee. Inlining removes that call.
+    @_transparent
     func lowEnergyEncrypt(
         key: UInt128,
         data: UInt128,
