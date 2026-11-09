@@ -57,7 +57,9 @@ jobs:
   # the tests actually execute in CI.
   android-test:
       name: Android (x86_64, test)
-      runs-on: ubuntu-latest
+      # The action installs a host toolchain for the runner's Ubuntu version,
+      # and swift.org has no Swift 6.3.2 build for Ubuntu 26.04.
+      runs-on: ubuntu-24.04
       timeout-minutes: 60
       steps:
         - uses: actions/checkout@v4
