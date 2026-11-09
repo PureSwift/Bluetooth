@@ -34,14 +34,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - triple: x86_64-unknown-none-elf
-            targets: Bluetooth BluetoothGAP BluetoothGATT BluetoothHCI
-          - triple: armv7-none-none-eabi
-            targets: Bluetooth BluetoothGAP BluetoothGATT BluetoothHCI
-          # No _Concurrency module for this triple; BluetoothHCI's API needs one.
-          - triple: aarch64-none-none-elf
-            targets: Bluetooth BluetoothGAP BluetoothGATT
+        # No _Concurrency module for these triples on Linux, and BluetoothHCI's
+        # API needs one. The WebAssembly job above builds BluetoothHCI.
+        triple: [x86_64-unknown-none-elf, armv7-none-none-eabi, aarch64-none-none-elf]
     container: swift:6.4.2
     steps:
       - name: Checkout
@@ -49,4 +44,4 @@ jobs:
       - name: Swift Version
         run: swift --version
       - name: Build
-        run: .github/scripts/embedded-bare-metal.sh ${{ matrix.triple }} ${{ matrix.targets }}
+        run: .github/scripts/embedded-bare-metal.sh ${{ matrix.triple }} Bluetooth BluetoothGAP BluetoothGATT
