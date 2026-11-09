@@ -15,6 +15,11 @@ public extension BluetoothHostControllerInterface {
     ///
     /// The command is used to authenticate the given encryption key associated with the remote device specified
     /// by the Connection_Handle, and once authenticated will encrypt the connection.
+    ///
+    /// Transparent because unoptimized arm64 Linux builds pass the `UInt128`
+    /// arguments of an async call in the wrong registers, which crashes the
+    /// callee. Inlining removes that call.
+    @_transparent
     func lowEnergyStartEncryption(
         connectionHandle: UInt16,
         randomNumber: UInt64,

@@ -232,7 +232,7 @@ if enableMacros {
     package.dependencies += [
         .package(
             url: "https://github.com/swiftlang/swift-syntax.git",
-            "600.0.1"..<"604.0.0"
+            "600.0.1"..<"605.0.0"
         )
     ]
     package.targets += [
