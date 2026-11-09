@@ -15,6 +15,11 @@ public extension BluetoothHostControllerInterface {
     ///
     /// The command is used to add one device to the list of address translations
     /// used to resolve Resolvable Private Addresses in the Controller.
+    ///
+    /// Transparent because unoptimized arm64 Linux builds pass the `UInt128`
+    /// arguments of an async call in the wrong registers, which crashes the
+    /// callee. Inlining removes that call.
+    @_transparent
     func lowEnergyAddDeviceToResolvingList(peerIdentifyAddressType: LowEnergyPeerIdentifyAddressType, peerIdentifyAddress: UInt64, peerIrk: UInt128, localIrk: UInt128, timeout: HCICommandTimeout = .default) async throws {
 
         let parameters = HCILEAddDeviceToResolvingList(peerIdentifyAddressType: peerIdentifyAddressType, peerIdentifyAddress: peerIdentifyAddress, peerIrk: peerIrk, localIrk: localIrk)
